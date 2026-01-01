@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+  - name: ParkGrid-Influx
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: SE4IOT
+      defaultBucket: park-grid
+    secureJsonData:
+      token: ${INFLUXDB_ADMIN_TOKEN}
+    isDefault: true

@@ -1,0 +1,79 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: parkgrid-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    restart: unless-stopped
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: parkgrid-influxdb
+    ports:
+     - "8086:8086"
+    volumes:
+     - influxdb_data:/var/lib/influxdb2
+    restart: unless-stopped
+
+
+  nodered:
+    build:
+      context: ./nodered
+    container_name: parkgrid-nodered
+    ports:
+      - "1880:1880"
+    env_file: .env
+    environment:
+      - TZ=Europe/Rome
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_ORG=SE4IOT
+      - INFLUX_BUCKET=park-grid
+      - INFLUX_TOKEN=dqMF8lRE0tkCOg3XKU9EB5wc2oxvnySiWfX5WF-fN3U3Z8SXY8NsqLp5WsoCphGC7ZftAdPvOgr2AFXpoIZzdg==
+      - ALLOWED_DURATION_MIN=${ALLOWED_DURATION_MIN}
+      - ZONE_OCCUPANCY_THRESHOLD=${ZONE_OCCUPANCY_THRESHOLD}
+    depends_on:
+      - mosquitto
+      - influxdb
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: parkgrid-grafana
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - influxdb
+    restart: unless-stopped
+
+  simulator:
+    build:
+      context: ./simulator
+    container_name: parkgrid-simulator
+    env_file: .env
+    environment:
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:
+  influxdb_data:
+  grafana_data:

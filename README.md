@@ -77,7 +77,7 @@ docker ps
 
 ## Configuration
 
-System parameters can be adjusted via the **.env** file.
+System parameters can be adjusted via the **.env** file. 
 
 ---
 
@@ -93,6 +93,7 @@ Alerts are published to the MQTT topic /parking/alerts and delivered via Telegra
 
 ## Notes
 
+- Copy `.env.example` to `.env` and adjust values before running.
 - Start with low thresholds to quickly verify alerts.
 - Always check data in Node-RED before debugging Grafana or Flux queries.
 - Bucket names in InfluxDB are strict.

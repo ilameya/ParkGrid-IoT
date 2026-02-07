@@ -1,10 +1,9 @@
 # ParkGrid
-Smart-City Parking Monitoring Platform
+A real-time IoT-based parking monitoring system designed for smart-city environments.
 
-ParkGrid is a real-time IoT-based parking monitoring system designed for smart-city environments.  
 ParkGrid provides a lightweight, event-driven platform to monitor parking slot occupancy, detect illegal parking behavior, and generate real-time insights and alerts.
 
-The system is fully containerized and can be deployed locally using Docker Compose.
+The system is fully containerized and can be deployed locally using Docker.
 
 ---
 
@@ -47,7 +46,24 @@ No additional installations are required.
 
 ## Getting Started
 
-Clone the repository and start the system:
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ilameya/ParkGrid-IoT.git
+cd ParkGrid-IoT
+```
+### 2. Configure Environment Variables
+```bash
+cp .env.example .env
+```
+Adjust parameters such as:
+- Number of zones and slots
+- Publish interval
+- Parking duration limits
+- Zone occupancy thresholds
+- InfluxDB and Grafana credentials
+
+### 3. start the system:
 
 ```bash
 docker compose up -d --build
@@ -92,10 +108,7 @@ Alerts are published to the MQTT topic /parking/alerts and delivered via Telegra
 ---
 
 ## Notes
-
-- Copy `.env.example` to `.env` and adjust values before running.
 - Start with low thresholds to quickly verify alerts.
 - Always check data in Node-RED before debugging Grafana or Flux queries.
-- Bucket names in InfluxDB are strict.
-- Restart Node-RED after changing `.env` variables.
-- Do not overcomplicate Flux queries early. Always validate data with a *'simple range + filter + limit'* query before adding pivot, group, or aggregateWindow.
+- Bucket names in InfluxDB are **case-sensitive**.
+- Old data may not match updated schemas; use recent time ranges when testing.

@@ -77,3 +77,5 @@ volumes:
   mosquitto_log:
   influxdb_data:
   grafana_data:
+  nodered_data:
+

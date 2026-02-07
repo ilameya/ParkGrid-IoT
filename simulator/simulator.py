@@ -9,7 +9,7 @@ import paho.mqtt.client as mqtt
 MQTT_HOST = os.getenv("MQTT_HOST", "mosquitto")
 MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))
 
-PUBLISH_INTERVAL = int(os.getenv("SIM_PUBLISH_INTERVAL_SEC", "2"))
+PUBLISH_INTERVAL = int(os.getenv("SIM_PUBLISH_INTERVAL_SEC", "60"))
 
 ZONES = os.getenv("SIM_ZONES", "center,residential").split(",")
 SLOTS_PER_ZONE = int(os.getenv("SIM_SLOTS_PER_ZONE", "20"))
@@ -54,8 +54,11 @@ def main():
                     if random.random() < DEPART_PROB:
                         st["occupied"] = 0
                         st["parking_duration"] = 0
-
+                
+                slot_uid = f"{zone}-{slot_id}"
+                 
                 payload = {
+                    "slot_uid": slot_uid,
                     "slot_id": slot_id,
                     "zone": zone,
                     "occupied": int(st["occupied"]),

@@ -32,9 +32,9 @@ services:
       - MQTT_HOST=mosquitto
       - MQTT_PORT=1883
       - INFLUX_URL=http://influxdb:8086
-      - INFLUX_ORG=SE4IOT
-      - INFLUX_BUCKET=park-grid
-      - INFLUX_TOKEN=dqMF8lRE0tkCOg3XKU9EB5wc2oxvnySiWfX5WF-fN3U3Z8SXY8NsqLp5WsoCphGC7ZftAdPvOgr2AFXpoIZzdg==
+      - INFLUX_ORG=${INFLUXDB_ORG}
+      - INFLUX_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUX_TOKEN=${INFLUXDB_ADMIN_TOKEN}
       - ALLOWED_DURATION_MIN=${ALLOWED_DURATION_MIN}
       - ZONE_OCCUPANCY_THRESHOLD=${ZONE_OCCUPANCY_THRESHOLD}
     depends_on:
@@ -78,4 +78,3 @@ volumes:
   influxdb_data:
   grafana_data:
   nodered_data:
-

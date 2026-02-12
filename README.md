@@ -56,14 +56,23 @@ cd ParkGrid-IoT
 ```bash
 cp .env.example .env
 ```
-Adjust parameters such as:
-- Number of zones and slots
-- Publish interval
-- Parking duration limits
-- Zone occupancy thresholds
-- InfluxDB and Grafana credentials
+### 3. Configure InfluxDB:
+- Go to InfluxDB  [http://localhost:8086](http://localhost:8086) 
+- Use credentianls from .env to create account
+- Use Organization and Bucket names from .env 
+- Copy the InfluxDB token and use it in your .env INFLUXDB_ADMIN_TOKEN
 
-### 3. start the system:
+
+### 4. Alert Message (Telegram)
+- Create a Bot in Telegram using @BotFather. Following this [Tutorial](https://core.telegram.org/bots/features#creating-a-new-bot)
+- Copy the token and paste it in the Bot node in Node-RED
+
+### 5. Configure Node-Red
+- Go to Node-RED [http://localhost:1880](http://localhost:1880)
+- Use your InfluxDB token in the "Write to InfluxDB (parking_status)" node and Deploy
+- Use your token for Bot in the Bot node and Deploy 
+
+### 6. start the system:
 
 ```bash
 docker compose up -d --build
@@ -74,40 +83,26 @@ Verify all services are running:
 docker ps
 ```
 
----
-## Service Endpoints
+### 7. Visualization and Monitoring
+- Go to Grafana [http://localhost:3000](http://localhost:3000)
+- Use credentials from .env if needed
 
-| Service  | URL                                            |
-| -------- | ---------------------------------------------- |
-| Node-RED | [http://localhost:1880](http://localhost:1880) |
-| InfluxDB | [http://localhost:8086](http://localhost:8086) |
-| Grafana  | [http://localhost:3000](http://localhost:3000) |
 
----
-
-**Grafana default credentials:**
-- Username: admin
-- Password: admin12345
-
----
-
-## Configuration
-
-System parameters can be adjusted via the **.env** file. 
-
----
-
-## Alerting
-
-ParkGrid generates two types of alerts:
-- OVERSTAY – triggered when a vehicle exceeds the allowed parking duration
-- ZONE_FULL – triggered when zone occupancy exceeds a defined threshold
-
-Alerts are published to the MQTT topic /parking/alerts and delivered via Telegram.
-
+### 8. Stop all services:
+```bash
+docker compose down
+```
 ---
 
 ## Notes
+You can Adjust parameters such as:
+- Number of zones and slots
+- Publish interval
+- Parking duration limits
+- Zone occupancy thresholds
+- InfluxDB and Grafana credentials
+
+Keep in Mind:
 - Start with low thresholds to quickly verify alerts.
 - Always check data in Node-RED before debugging Grafana or Flux queries.
 - Bucket names in InfluxDB are **case-sensitive**.

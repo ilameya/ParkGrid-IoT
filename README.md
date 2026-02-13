@@ -52,11 +52,8 @@ No additional installations are required.
 git clone https://github.com/ilameya/ParkGrid-IoT.git
 cd ParkGrid-IoT
 ```
-### 2. Configure Environment Variables
-```bash
-cp .env.example .env
-```
-### 3. Start Services:
+
+### 2. Start Services:
 
 ```bash
 docker compose up -d --build
@@ -67,28 +64,25 @@ Verify all services are running:
 docker ps
 ```
 
-### 4. Configure InfluxDB:
-- Go to InfluxDB  [http://localhost:8086](http://localhost:8086) 
-- Use credentianls from .env to create account
-- Use Organization and Bucket names from .env 
-- Copy the InfluxDB token and use it in your .env INFLUXDB_ADMIN_TOKEN
-
-
-### 5. Alert Message (Telegram)
+### 3. Configure Alert Service (Telegram Bot)
 - Create a Bot in Telegram using @BotFather. Following this [Tutorial](https://core.telegram.org/bots/features#creating-a-new-bot)
-- Copy the token and paste it in the Bot node in Node-RED
+- Save the API Token for using later
 
-### 6. Configure Node-Red
+### 4. Configure Node-Red
 - Go to Node-RED [http://localhost:1880](http://localhost:1880)
-- Use your InfluxDB token in the "Write to InfluxDB (parking_status)" node and Deploy
-- Use your token for Bot in the Bot node and Deploy 
+- Copy your INFLUXDB_ADMIN_TOKEN from .env and paste in the "Write to InfluxDB (parking_status)" node and Deploy
+- Use your API token for Telegram Bot in the Bot node and Deploy 
 
-### 7. Visualization and Monitoring
+### 5. Configure InfluxDB:
+- Go to InfluxDB  [http://localhost:8086](http://localhost:8086) 
+- Use credentianls from .env to login
+
+### 6. Visualization and Monitoring
 - Go to Grafana [http://localhost:3000](http://localhost:3000)
-- Use credentials from .env if needed
+- Use credentials from .env for login
 
 
-### 8. Stop all services:
+### 7. Stop all services:
 ```bash
 docker compose down
 ```

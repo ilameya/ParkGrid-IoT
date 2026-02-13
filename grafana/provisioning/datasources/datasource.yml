@@ -7,8 +7,8 @@ datasources:
     url: http://influxdb:8086
     jsonData:
       version: Flux
-      organization: SE4IOT
-      defaultBucket: park-grid
+      organization: ${INFLUXDB_ORG}
+      defaultBucket: ${INFLUXDB_BUCKET}
     secureJsonData:
       token: ${INFLUXDB_ADMIN_TOKEN}
     isDefault: true
